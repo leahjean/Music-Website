@@ -3,7 +3,6 @@ ENGINE.Sprites = function() {
 		data: []
 	}
 	this.sprites.data['notes'] = [
-
 {
 	key: "dark-orange",
 	frame: {x: 128, y: 101, w: 85, h: 85},
@@ -38,7 +37,7 @@ ENGINE.Sprites = function() {
 },
 {
 	key: "green",
-	frame: {x: 638, y: 101, w: 85, h: 85},
+	frame: {x: 640, y: 99, w: 85, h: 85},
 	rotated: false,
 	trimmed: false,
 },
@@ -65,7 +64,46 @@ ENGINE.Sprites = function() {
 	frame: {x: 1048, y: 101, w: 85, h: 85},
 	rotated: false,
 	trimmed: false,
-}]
+}];
+
+	this.sprites.data['bars'] = [
+{
+	key: "thin-dark",
+	frame: {x: 172, y: 72, w: 3, h: 500},
+	rotated: false,
+	trimmed: false,
+},
+{
+	key: "thick",
+	frame: {x: 252, y: 72, w: 20, h: 500},
+	rotated: false,
+	trimmed: false,
+},
+{
+	key: "thin-uneven",
+	frame: {x: 340, y: 72, w: 13, h: 500},
+	rotated: false,
+	trimmed: false,
+},
+{
+	key: "medium",
+	frame: {x: 429, y: 72, w: 10, h: 500},
+	rotated: false,
+	trimmed: false,
+},
+{
+	key: "darkest-bottom",
+	frame: {x: 150, y: 459, w: 50, h: 12},
+	rotated: false,
+	trimmed: false,
+},
+{
+	key: "dark-bottom",
+	frame: {x: 247, y: 459, w: 50, h: 12},
+	rotated: false,
+	trimmed: false,
+},
+]
 
 }
 

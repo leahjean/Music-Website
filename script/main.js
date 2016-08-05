@@ -6,14 +6,16 @@ var app = new ENGINE.Application({
 	height: window.innerHeight,
 	playing: true,
 	set_volume: 0.5,
+	song: undefined,
 
 	// Load all assets on creation
 	oncreate: function() {
 		//Load assets
+		this.assets.addAudio("Rain.mp3");
 		this.assets.addAudio("Fairytale.mp3");
 		this.assets.addImage("Skylake.png");
-		this.assets.addImage("keyboard.png");
 		this.assets.addSprites("sprites.png", this.sprites.fetch('notes'));
+		this.assets.addSprites("KCCS_barsv1-03.png", this.sprites.fetch('bars'));
 		console.log(this);
 	},
 

@@ -79,7 +79,6 @@ ENGINE.Loader.prototype = {
 		this.count--;  // Decrease the count of items in queue
 		this.progress = (this.total - this.count) / this.total;  // Update progress
 
-		console.log("Item Ready");
 		// If no more items in queue, execute all callbacks and reset loader
 		if (this.count <= 0) {
 			this.loading = false;
