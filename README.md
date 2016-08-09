@@ -2,9 +2,11 @@
 
 Game is fully playable just by opening index.html in a web browser.
 
-Ver. 1.01: Added note class to generate notes at specific time intervals. Added bars for notes to fall down on.
+Ver. 1.02 (8-9-16): Added pressability function and changed bar positioning to be easier to add new elements to.
 
-Ver. 1.00: Initial game engine using Rezoner's game architecture. "Keyboard-Hero" by mjanisz was referenced to transition Rezoner's engine to a rhythm game. 
+Ver. 1.01 (8-5-16): Added note class to generate notes at specific time intervals. Added bars for notes to fall down on. Created beatmap class to provide the file format for new beatmaps/songs.
+
+Ver. 1.00 (7-24-16): Initial game engine using Rezoner's game architecture. "Keyboard-Hero" by mjanisz was referenced to transition Rezoner's engine to a rhythm game. 
 
 Visual design/language and front-end web design by Chiarei
 

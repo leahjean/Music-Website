@@ -7,6 +7,8 @@ ENGINE.Note = function(args) {
 		image: app.assets.image("sprites"),
 		key: null,
 		note_size: app.width * 0.03,
+		bar_number: null,  // Which bar the note is spawned on
+		pressed: false,  // Flag to indicate the note was cleared
 		opacity: 1
 	}, args);
 };
@@ -15,12 +17,16 @@ ENGINE.Note.prototype = {
 	// Move the note in the specified direction
 	step: function(delta) {
 		this.y -= Math.sin(this.direction) * this.speed * delta / 1000;
-		if (this.y > app.height * 0.8) {
+		if (this.y > app.height * 0.8 || this.pressed) {
 			this.opacity -= 0.025;
 			if (this.opacity <= 0.025) {
 				this.remove();
 			}
-			this.speed = 10;
+			if(this.pressed) {
+				this.speed = 0;
+			} else {
+				this.speed = 10;
+			}
 		}
 	},
 

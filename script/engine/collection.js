@@ -48,7 +48,7 @@ _.extend(ENGINE.Collection.prototype, {
 	step: function(delta) {
 		// Check if a removal needs to be applied
 		if (this.dirty) {
-			this.dirty = false;
+			this.dirty = false; 	
 			this.clean();
 
 			// Lastly, sort the entities by the zIndex

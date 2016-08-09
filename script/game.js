@@ -54,37 +54,40 @@ app.game = new ENGINE.Scene({
 
 		for (var i = 0; i < 6; i++) {
 			app.layer.drawImage(bars, back_frame.x, back_frame.y, back_frame.w, back_frame.h,
-				app.width * (0.125 + 0.05 * i) - back_frame.w / 2 + curr_frame.w / 2 - 1.5, 
-				app.height * 0.297, back_frame.w, app.height * 0.51);
+				app.width * (0.125 + 0.05 * i) - back_frame.w / 2 - app.width / 1000, 
+				app.height * 0.297, back_frame.w, app.height * 0.505);
 			app.layer.drawImage(bars, curr_frame.x, curr_frame.y, curr_frame.w, curr_frame.h,
-				app.width * (0.125 + 0.05 * i), app.height * 0.3, curr_frame.w, app.height * 0.5);
+				app.width * (0.125 + 0.05 * i) - curr_frame.w / 2,
+				app.height * 0.3, curr_frame.w, app.height * 0.5);
 			app.layer.drawImage(sprite, bot_frame.x, bot_frame.y, bot_frame.w, bot_frame.h,
-				app.width * (0.125 + 0.05 * i) - bot_frame.w * 0.9 / 2 + curr_frame.w / 2, 
-				app.height * 0.8, bot_frame.w * 0.9, bot_frame.h);
+				app.width * (0.125 + 0.05 * i) - bot_frame.w * 0.9 / 2 - app.width / 1000, 
+				app.height * 0.8 - bot_frame.h / 2, bot_frame.w * 0.9, bot_frame.h);
 		}
 
-		// Note testing
+		// Creates a note for testing if there are no notes
 		if (this.notes.length == 0) {
 			this.notes.add(ENGINE.Note, {
 				key: "blue",
-				x: app.width * 0.175 + curr_bar.frame.w / 2 - app.width * 0.03 / 2,
-				speed: app.height / 4
+				x: app.width * 0.175 - app.width * 0.03 / 2,
+				speed: app.height / 4,
+				bar_number: 1
 			})
 		}
 
-		// Looping song early for testing
-		var curr_song = app.song;
-		if (curr_song.currentTime > 100) {
-			curr_song.load();
-			curr_song.play();
-		}
+		/*  Testing notes
+		var _note = app.assets.data.sprites["orange"];
+		var _frame = _note.frame;
+		app.layer.drawImage(sprite, _frame.x, _frame.y, _frame.w, _frame.h,
+			app.width * 0.225 - app.width * 0.03 / 2, 
+			app.height * 0.8 - app.width * 0.03, app.width * 0.03, app.width * 0.03);
+		*/
 
 		this.notes.call("render", delta);  // Render all entities
 	},
 
 	onstep: function(delta) {
 		var curr_song = app.song;
-		if(this.beatmap.curr_beat < this.beatmap.notes.length) {
+		if (this.beatmap.curr_beat < this.beatmap.notes.length) {
 			this.create_note();
 		}
 		/*
@@ -114,6 +117,26 @@ app.game = new ENGINE.Scene({
 		}
 	},
 
+	onkeydown: function(key) {
+		/* Timing stuff
+		var time = app.song.currentTime - 5;
+		console.log(key + " " + time); */
+		// Check if one of the control keys was pressed
+		var pressed_bar = "asdfgh".indexOf(key);
+		if (pressed_bar > -1 && this.notes.length > 0) {
+			for (var i = 0; i < (Math.min(6, this.notes.length)); i++) {
+				var curr_note = this.notes[i];
+				var up_bound = app.height * 0.8;
+				var low_bound = app.height * 0.8 - app.width * 0.03;
+				if ((curr_note.bar_number == pressed_bar) && (curr_note.y > low_bound) &&
+				    (curr_note.y < up_bound)) {
+					curr_note.pressed = true;
+				console.log(key + " score: +1");
+				}
+			}
+		}
+	},
+
 	onleave: function() {
 		this.entities.wipe();
 		this.notes.wipe();
@@ -126,15 +149,15 @@ app.game = new ENGINE.Scene({
 		var beat = this.beatmap.get_beat();
 		// Trigger note creation when the song position is reached
 		var note_delay = app.height * 0.5 / this.note_speed;
-		if(app.song.currentTime - (5 - note_delay) >= beat.song_pos) {
+		if (app.song.currentTime - (5 - note_delay) >= beat.song_pos) {
 			var keys = beat.beats.split("");
 			for(var i = 0; i < keys.length; i++) {
-				if(keys[i] == 1) {
+				if (keys[i] == 1) {
 					this.notes.add(ENGINE.Note, {
 						key: this.beatmap.get_color(i),
-						x: app.width * (0.125 + i * 0.05) +
-						  this.bar.frame.w / 2 - app.width * 0.03 / 2,
-						speed: this.note_speed
+						x: app.width * (0.125 + i * 0.05) - app.width * 0.03 / 2,
+						speed: this.note_speed,
+						bar_number: i
 					})
 				}
 			}
@@ -144,7 +167,7 @@ app.game = new ENGINE.Scene({
 
 	fade_out: function() {
 		// Only run fade_out if the song is playing
-		if(app.game.playing) {
+		if (app.game.playing) {
 			var curr_song = app.song;
 			while(curr_song.volume > 0) {
 				if (curr_song.volume - this.fade_delay * app.set_volume < 0) {
@@ -160,7 +183,7 @@ app.game = new ENGINE.Scene({
 
 	fade_in: function() {
 		// Only run fade_in if song isn't playing
-		if(!app.game.playing) {
+		if (!app.game.playing) {
 			var curr_song = app.song;
 			curr_song.play();
 			while(curr_song.volume < app.set_volume) {
