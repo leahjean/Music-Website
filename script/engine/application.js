@@ -3,9 +3,14 @@ ENGINE.Application = function(args) {
 	var app = this;
 	_.extend(this, args);
 
-	// Create full-screen canvas wrapper and add to document
-	this.layer = cq();
+	// Create 16:9 canvas wrapper and add to document
+	var dims = this.window_dim(4 / 3);
+	this.layer = cq(dims[0], dims[1]);
 	this.layer.appendTo("body");
+
+	// Specify width and height of the game
+	this.width = dims[0];
+	this.height = dims[1];
 
 	// Bind events to the application using the eveline library
 	eveline(this);
@@ -61,5 +66,16 @@ ENGINE.Application.prototype = {
 	// Mouse gets translated to a position
 	onmousedown: function(x, y) {
 		this.dispatch("onmousedown", x, y);
+	},
+
+	window_dim: function(ratio) {
+		var width = window.innerWidth;
+		var height = window.innerHeight;
+		if (height * ratio > width) {
+			height = width / ratio;
+		} else {
+			width = height * ratio;
+		}
+		return [width, height];
 	}
 }

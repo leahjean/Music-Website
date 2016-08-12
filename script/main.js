@@ -1,9 +1,6 @@
 // Main javascript to initialize the application that controls scenes
 // See application.js for all variables included
 var app = new ENGINE.Application({
-	// Get width and height of window
-	width: window.innerWidth,
-	height: window.innerHeight,
 	playing: true,
 	set_volume: 0.5,
 	song: undefined,

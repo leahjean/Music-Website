@@ -6,6 +6,7 @@ app.game = new ENGINE.Scene({
 	bar: null,
 	note_speed: app.height / 4,
 	beatmap: null,  // Current beatmap playing
+	bar_keys: "asdjkl",
 
 	oncreate: function() {
 		// Create new collection
@@ -122,7 +123,7 @@ app.game = new ENGINE.Scene({
 		var time = app.song.currentTime - 5;
 		console.log(key + " " + time); */
 		// Check if one of the control keys was pressed
-		var pressed_bar = "asdfgh".indexOf(key);
+		var pressed_bar = this.bar_keys.indexOf(key);
 		if (pressed_bar > -1 && this.notes.length > 0) {
 			for (var i = 0; i < (Math.min(6, this.notes.length)); i++) {
 				var curr_note = this.notes[i];
