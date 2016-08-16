@@ -10,6 +10,7 @@ ENGINE.Beatmap = function(args) {
 		curr_beat: 0,  // Current beat in the song
 		bar_style: null,  // Bar-style for a beat map
 		bg: null,  // Background for a beat map
+		max_note: 0,  // Number of notes to check each time button is pressed
 		song_name: null  // Song key
 	}, args);
 };

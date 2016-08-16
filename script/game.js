@@ -7,6 +7,7 @@ app.game = new ENGINE.Scene({
 	note_speed: app.height / 4,
 	beatmap: null,  // Current beatmap playing
 	bar_keys: "asdjkl",
+	note_num: 0,  // Timing purposes
 
 	oncreate: function() {
 		// Create new collection
@@ -16,7 +17,7 @@ app.game = new ENGINE.Scene({
 
 	onenter: function() {
 		// Load in the current beatmap
-		this.beatmap = this.rain_map;
+		this.beatmap = this.chainsmokers_map;
 
 		// Load in the current song
 		app.song = app.assets.audio(this.beatmap.song_name);
@@ -28,8 +29,8 @@ app.game = new ENGINE.Scene({
 			curr_song.volume = app.set_volume;
 			//curr_song.currentTime = 8;
 		}, this.beatmap.offset);
-		app.song.loop = true;
-		
+		app.song.loop = false;
+		curr_song.currentTime = 0;
 		this.bar = app.assets.data.sprites[this.beatmap.bar_style];
 	},
 
@@ -65,6 +66,7 @@ app.game = new ENGINE.Scene({
 				app.height * 0.8 - bot_frame.h / 2, bot_frame.w * 0.9, bot_frame.h);
 		}
 
+		/*
 		// Creates a note for testing if there are no notes
 		if (this.notes.length == 0) {
 			this.notes.add(ENGINE.Note, {
@@ -73,7 +75,7 @@ app.game = new ENGINE.Scene({
 				speed: app.height / 4,
 				bar_number: 1
 			})
-		}
+		}*/
 
 		/*  Testing notes
 		var _note = app.assets.data.sprites["orange"];
@@ -123,26 +125,30 @@ app.game = new ENGINE.Scene({
 		var time = app.song.currentTime - 5;
 		console.log(key + " " + time); */
 		// Check if one of the control keys was pressed
+		if (key == 'n') {
+			console.log(this.note_num);
+			return;
+		}
 		var pressed_bar = this.bar_keys.indexOf(key);
 		if (pressed_bar > -1 && this.notes.length > 0) {
-			for (var i = 0; i < (Math.min(6, this.notes.length)); i++) {
+			for (var i = 0; i < (Math.min(this.beatmap.max_note, this.notes.length)); i++) {
 				var curr_note = this.notes[i];
 				var up_bound = app.height * 0.8;
 				var low_bound = app.height * 0.8 - app.width * 0.03;
 				if ((curr_note.bar_number == pressed_bar) && (curr_note.y > low_bound) &&
 				    (curr_note.y < up_bound)) {
 					curr_note.pressed = true;
-				console.log(key + " score: +1");
 				}
 			}
 		}
+		var note_delay = app.height * 0.5 / this.note_speed;
+		console.log(key, " ", (app.song.currentTime - this.beatmap.offset));
 	},
 
 	onleave: function() {
 		this.entities.wipe();
 		this.notes.wipe();
 		app.song.pause();
-		this.song.currentTime = 0;
 	},
 
 	// Create a note if the notes in the map haven't all been exhausted
@@ -150,7 +156,8 @@ app.game = new ENGINE.Scene({
 		var beat = this.beatmap.get_beat();
 		// Trigger note creation when the song position is reached
 		var note_delay = app.height * 0.5 / this.note_speed;
-		if (app.song.currentTime - (5 - note_delay) >= beat.song_pos) {
+		if (app.song.currentTime - (this.beatmap.offset - note_delay) >= beat.song_pos) {
+			this.note_num ++;
 			var keys = beat.beats.split("");
 			for(var i = 0; i < keys.length; i++) {
 				if (keys[i] == 1) {
