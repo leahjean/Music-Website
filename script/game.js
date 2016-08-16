@@ -8,6 +8,7 @@ app.game = new ENGINE.Scene({
 	beatmap: null,  // Current beatmap playing
 	bar_keys: "asdjkl",
 	note_num: 0,  // Timing purposes
+	note_size: app.width * 0.03,
 
 	oncreate: function() {
 		// Create new collection
@@ -28,9 +29,10 @@ app.game = new ENGINE.Scene({
 			curr_song.play();
 			curr_song.volume = app.set_volume;
 			//curr_song.currentTime = 8;
-		}, this.beatmap.offset);
+		}, 1000);
+
 		app.song.loop = false;
-		curr_song.currentTime = 0;
+
 		this.bar = app.assets.data.sprites[this.beatmap.bar_style];
 	},
 
@@ -41,6 +43,7 @@ app.game = new ENGINE.Scene({
 		var bg = app.assets.image(this.beatmap.bg);
 		var sprite = app.assets.image("sprites");
 		var bars = app.assets.image("KCCS_barsv1-03");
+		var glow = app.assets.image("KCCS_set3-05");
 
 		// Draw the background
 		// We can edit this to be dynamic later
@@ -77,15 +80,20 @@ app.game = new ENGINE.Scene({
 			})
 		}*/
 
-		/*  Testing notes
-		var _note = app.assets.data.sprites["orange"];
+		/*
+		var _note = app.assets.data.sprites["white-fill-glow"];
 		var _frame = _note.frame;
-		app.layer.drawImage(sprite, _frame.x, _frame.y, _frame.w, _frame.h,
+		app.layer.drawImage(glow, _frame.x, _frame.y, _frame.w, _frame.h,
 			app.width * 0.225 - app.width * 0.03 / 2, 
 			app.height * 0.8 - app.width * 0.03, app.width * 0.03, app.width * 0.03);
 		*/
-
 		this.notes.call("render", delta);  // Render all entities
+
+		/*
+		// Draw cutoff for the background
+		app.layer.drawImage(bg,	0, bg.height * 0.805, bg.width, bg.height * 0.195,
+			0, app.height * 0.805, app.width, app.height * 0.195)
+		*/
 	},
 
 	onstep: function(delta) {
@@ -103,6 +111,8 @@ app.game = new ENGINE.Scene({
 			}
 		}, false);
 		*/
+
+		// Call step functions for all entities
 		this.entities.step(delta);
 		this.entities.call("step", delta);
 		this.notes.step(delta);
@@ -138,10 +148,11 @@ app.game = new ENGINE.Scene({
 				if ((curr_note.bar_number == pressed_bar) && (curr_note.y > low_bound) &&
 				    (curr_note.y < up_bound)) {
 					curr_note.pressed = true;
+					curr_note.key = "white-fill-glow";
+					curr_note.image = app.assets.image("KCCS_set3-05");
 				}
 			}
 		}
-		var note_delay = app.height * 0.5 / this.note_speed;
 		console.log(key, " ", (app.song.currentTime - this.beatmap.offset));
 	},
 

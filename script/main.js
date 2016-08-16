@@ -14,6 +14,7 @@ var app = new ENGINE.Application({
 		this.assets.addImage("Skylake.png");
 		this.assets.addSprites("sprites.png", this.sprites.fetch('notes'));
 		this.assets.addSprites("KCCS_barsv1-03.png", this.sprites.fetch('bars'));
+		this.assets.addSprites("KCCS_set3-05.png", this.sprites.fetch('glow'));
 		console.log(this);
 	},
 

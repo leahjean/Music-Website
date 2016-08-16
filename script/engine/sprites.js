@@ -105,7 +105,32 @@ ENGINE.Sprites = function() {
 },
 ]
 
-}
+	this.sprites.data['glow'] = [
+{
+	key: "white-fill-glow",
+	frame: {x: 73, y: 353, w: 77, h: 77},
+	rotated: false,
+	trimmed: false,
+},
+{
+	key: "color-fill-glow",
+	frame: {x: 216, y: 353, w: 77, h: 77},
+	rotated: false,
+	trimmed: false,
+},
+{
+	key: "gray-glow",
+	frame: {x: 726, y: 141, w: 42, h: 42},
+	rotated: false,
+	trimmed: false,
+},
+{
+	key: "white-glow",
+	frame: {x: 1092, y: 349, w: 42, h: 42},
+	rotated: false,
+	trimmed: false,
+},
+]}
 
 // Fetch a set of locations for the specified group
 ENGINE.Sprites.prototype = {

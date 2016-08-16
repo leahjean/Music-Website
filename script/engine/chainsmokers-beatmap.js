@@ -108,11 +108,10 @@ app.game.chainsmokers_map = new ENGINE.Beatmap({
     {song_pos: 39.0, beats: "100000"},
     // Yeah I need you right now
     {song_pos: 40.15, beats: "100100"},
-    {song_pos: 40.32, beats: "001001"},
-    {song_pos: 40.47, beats: "001001"},
-    {song_pos: 40.62, beats: "001001"},
-    {song_pos: 40.81, beats: "001001"},
-    {song_pos: 41.00, beats: "001001"},
+    {song_pos: 40.36, beats: "001001"},
+    {song_pos: 40.51, beats: "001001"},
+    {song_pos: 40.69, beats: "001001"},
+    {song_pos: 40.91, beats: "001001"},
     {song_pos: 41.25, beats: "010010"},
 
     /*
