@@ -9,6 +9,7 @@ ENGINE.Note = function(args) {
 		note_size: app.width * 0.03,
 		bar_number: null,  // Which bar the note is spawned on
 		pressed: false,  // Flag to indicate the note was cleared
+		paused: false,  // Paused notes don't move
 		opacity: 1
 	}, args);
 };
@@ -16,16 +17,18 @@ ENGINE.Note = function(args) {
 ENGINE.Note.prototype = {
 	// Move the note in the specified direction
 	step: function(delta) {
-		this.y -= Math.sin(this.direction) * this.speed * delta / 1000;
-		if (this.y > app.height * 0.8 || this.pressed) {
-			this.opacity -= 0.025;
-			if (this.opacity <= 0.025) {
-				this.remove();
-			}
-			if(this.pressed) {
-				this.speed = 0;
-			} else {
-				this.speed = 10;
+		if (!this.paused) {
+			this.y -= Math.sin(this.direction) * this.speed * delta / 1000;
+			if (this.y > app.height * 0.8 || this.pressed) {
+				this.opacity -= 0.025;
+				if (this.opacity <= 0.025) {
+					this.remove();
+				}
+				if(this.pressed) {
+					this.speed = 0;
+				} else {
+					this.speed = 10;
+				}
 			}
 		}
 	},
@@ -40,6 +43,16 @@ ENGINE.Note.prototype = {
 		  .drawImage(this.image, curr_frame.x, curr_frame.y, curr_frame.w, curr_frame.h,
 		  	this.x, this.y, this.note_size, this.note_size)
 		  .restore();
+	},
+
+	// Stop note movement
+	pause: function() {
+		this.paused = true;
+	},
+
+	// Resume note movement
+	play: function() {
+		this.paused = false;
 	},
 
 	remove: function() {

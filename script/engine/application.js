@@ -4,7 +4,7 @@ ENGINE.Application = function(args) {
 	_.extend(this, args);
 
 	// Create 16:9 canvas wrapper and add to document
-	var dims = this.window_dim(4 / 3);
+	var dims = this.window_dim(1882 / 1240);
 	this.layer = cq(dims[0], dims[1]);
 	this.layer.appendTo("body");
 
@@ -68,6 +68,7 @@ ENGINE.Application.prototype = {
 		this.dispatch("onmousedown", x, y);
 	},
 
+	// Creates window dimensions that fit the input aspect ratio
 	window_dim: function(ratio) {
 		var width = window.innerWidth;
 		var height = window.innerHeight;

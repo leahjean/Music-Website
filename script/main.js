@@ -8,12 +8,10 @@ var app = new ENGINE.Application({
 	// Load all assets on creation
 	oncreate: function() {
 		//Load assets
-		this.assets.addAudio("Rain.mp3");
-		this.assets.addAudio("Fairytale.mp3");
 		this.assets.addAudio("Chainsmokers (Daya).mp3");
 		this.assets.addImage("Skylake.png");
 		this.assets.addSprites("sprites.png", this.sprites.fetch('notes'));
-		this.assets.addSprites("KCCS_barsv1-03.png", this.sprites.fetch('bars'));
+		this.assets.addSprites("KCCS_barsv1-03.png", this.sprites.fetch('ui'));
 		this.assets.addSprites("KCCS_set3-05.png", this.sprites.fetch('glow'));
 		console.log(this);
 	},

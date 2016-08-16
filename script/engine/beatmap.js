@@ -11,7 +11,10 @@ ENGINE.Beatmap = function(args) {
 		bar_style: null,  // Bar-style for a beat map
 		bg: null,  // Background for a beat map
 		max_note: 0,  // Number of notes to check each time button is pressed
-		song_name: null  // Song key
+		song_name: null,  // Song key
+		title_offset: 0,  // x-coordinate to place song name
+		artist_offset: 0,  // x-coordinate to place artist name
+		difficulty: 0,  // Difficulty rating of the beatmap
 	}, args);
 };
 

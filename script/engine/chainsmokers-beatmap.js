@@ -5,6 +5,11 @@ app.game.chainsmokers_map = new ENGINE.Beatmap({
     bar_style: "medium",  // Bar-style
     bg: "Skylake",  // Background image
     song_name: "Chainsmokers (Daya)",
+    song_title: "DON'T LET ME DOWN",
+    artist_name: "Chainsmokers ft. Daya",
+    title_offset: app.width * 0.08,
+    artist_offset: app.width * 0.085,
+    difficulty: 3,
     note_style: ["blue", "light-blue", "teal", "sky-blue", "green", "blue"],
     max_note: 14,
     notes: [  // Array of notes

@@ -2,6 +2,8 @@
 
 Game is fully playable just by opening index.html in a web browser.
 
+Ver. 1.04 (8-16-16): Updated UI to include song information and keys to press for the bar. Added "glow effect" for pressed notes.
+
 Ver. 1.03 (8-15-16): Added MidiParser for creating beatmaps from Midi Dumpsequences (DumpSequence.java and DumpReceiver.java). First beatmap is 30% done.
 
 Ver. 1.02 (8-9-16): Added pressability function and changed bar positioning to be easier to add new elements to.
