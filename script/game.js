@@ -3,10 +3,12 @@ app.game = new ENGINE.Scene({
 	playing: true,
 	stopped: false,
 	fade_delay: 0.0000025,  // Audio fade speed
-	bar: null,
 	note_speed: app.height / 4,
 	beatmap: null,  // Current beatmap playing
-	bar_keys: "asdjkl",
+	bar: null,  // Bar sprite to be used
+	bar_keys: "asdjkl",  // Which keys correspond to the bars
+	bar_pressed: [],   // Which bars are currently pressed
+	bar_length: [],  // How wide each background bar is (from 0 to 1)
 	note_num: 0,  // Timing purposes
 	note_size: app.width * 0.03,
 
@@ -18,7 +20,7 @@ app.game = new ENGINE.Scene({
 
 	onenter: function() {
 		// Load in the current beatmap
-		this.beatmap = this.chainsmokers_map;
+		this.beatmap = this.stay_the_night_map;
 
 		// Load in the current song
 		app.song = app.assets.audio(this.beatmap.song_name);
@@ -28,16 +30,24 @@ app.game = new ENGINE.Scene({
 		setTimeout(function() {
 			curr_song.play();
 			curr_song.volume = app.set_volume;
-			//curr_song.currentTime = 8;
 		}, 1000);
+		curr_song.currentTime = this.beatmap.offset / 2;
 
 		app.song.loop = false;
 
+		// Select bar asset according to the beatmap
 		this.bar = app.assets.data.sprites[this.beatmap.bar_style];
+
+		// Initialize back bar width and press status
+		for (var i = 0; i < this.bar_keys.length; i++) {
+			this.bar_pressed.push(false);
+			this.bar_length.push(0.0);
+		}
 	},
 
 	onrender: function(delta) {
-		app.layer.clear("rgb(0, 0, 0)");  // Set screen background to black
+		// Set screen background to black
+		app.layer.clear("rgb(0, 0, 0)");  
 
 		// Load in the background assets
 		var bg = app.assets.image(this.beatmap.bg);
@@ -46,27 +56,29 @@ app.game = new ENGINE.Scene({
 		var glow = app.assets.image("KCCS_set3-05");
 
 		// Draw the background
-		// We can edit this to be dynamic later
 		app.layer.drawImage(bg,	0, 0, app.width, app.height);
 
-		// Draw the UI
+		/** Draw the UI **/
+		// Title bar
 		var title_bar = app.assets.data.sprites["song-title-bar"];
 		var t_frame = title_bar.frame;
-		// Title bar
 		app.layer.drawImage(glow, t_frame.x, t_frame.y, t_frame.w, t_frame.h,
 			0, app.height * 0.15, app.width * 0.39, app.height * 0.055);
+
 		// Song title
 		app.layer.fillStyle("rgba(255, 255, 255, 1)")
 				 .font("bold " + Math.round(app.height * 0.030) + 
 				 	"px 'Lucida Sans Unicode', 'Lucida Grande, sans-serif")
 				 .fillText(this.beatmap.song_title, this.beatmap.title_offset,
 				 	app.height * 0.188);
+
 		// Artist name
 		app.layer.fillStyle("rgba(255, 255, 255, 1)")
 				 .font("lighter " + Math.round(app.height * 0.018) + 
 				 	"px 'Lucida Sans Unicode', 'Lucida Grande, sans-serif")
 				 .fillText(this.beatmap.artist_name, this.beatmap.artist_offset,
 				 	app.height * 0.233);
+
 		// Difficulty rating
 		for (var i = 0; i < 5; i++) {
 			if (i < this.beatmap.difficulty) {
@@ -82,48 +94,68 @@ app.game = new ENGINE.Scene({
 			}
 		}
 
-
-		// Draw the keyboard
-		var curr_frame = this.bar.frame;
-		var bar_bot = app.assets.data.sprites["darkest-bottom"];
+		// The bars
+		var curr_frame = this.bar.frame;  // Main bar style
+		var bar_bot = app.assets.data.sprites["darkest-bottom"];  // Bottom of bar style
 		var bot_frame = bar_bot.frame;
-		var back_bar = app.assets.data.sprites["thick"];
+		var back_bar = app.assets.data.sprites["thick"];  // Back bar style
 		var back_frame = back_bar.frame;
-
 		for (var i = 0; i < 6; i++) {
+			var bar_len = this.bar_length[i];
 			app.layer.drawImage(bars, back_frame.x, back_frame.y, back_frame.w, back_frame.h,
-				app.width * (0.125 + 0.05 * i) - back_frame.w / 2 - app.width / 1000, 
-				app.height * 0.297, back_frame.w, app.height * 0.505);
+				app.width * (0.125 + 0.05 * i) - bar_len * app.width * 0.0275 / 2, 
+				app.height * 0.297, bar_len * app.width * 0.025, app.height * 0.505);
 			app.layer.drawImage(bars, curr_frame.x, curr_frame.y, curr_frame.w, curr_frame.h,
-				app.width * (0.125 + 0.05 * i) - curr_frame.w / 2,
-				app.height * 0.3, curr_frame.w, app.height * 0.5);
+				app.width * (0.125 + 0.05 * i) - app.width * 0.01 / 2,
+				app.height * 0.3, app.width * 0.01, app.height * 0.5);
 			app.layer.drawImage(sprite, bot_frame.x, bot_frame.y, bot_frame.w, bot_frame.h,
 				app.width * (0.125 + 0.05 * i) - app.width * 0.0323 / 2, 
-				app.height * 0.8 - bot_frame.h / 2, app.width * 0.03, bot_frame.h);
+				app.height * 0.8 - bot_frame.h / 2, app.width * 0.03, app.height * 0.01);
 			
-			// Draw the letters
+			// The letters
 			var bar_key = "bar-" + i;
 			var letter = app.assets.data.sprites[bar_key];
 			var l_frame = letter.frame;
 			app.layer.drawImage(bars, l_frame.x, l_frame.y, l_frame.w, l_frame.h,
-				app.width * (0.125 + 0.05 * i) - l_frame.w / 2,
-				app.height * 0.82, l_frame.w, l_frame.h);
+				app.width * (0.125 + 0.05 * i) - l_frame.w * app.width / 2 / 1307,
+				app.height * 0.82, l_frame.w * app.width / 1307, l_frame.h * app.height / 861);
 		}
 
 		/*
+		// Draw a note for testing position
 		var _note = app.assets.data.sprites["white-fill-glow"];
 		var _frame = _note.frame;
 		app.layer.drawImage(glow, _frame.x, _frame.y, _frame.w, _frame.h,
 			app.width * 0.225 - app.width * 0.03 / 2, 
 			app.height * 0.8 - app.width * 0.03, app.width * 0.03, app.width * 0.03);
 		*/
-		this.notes.call("render", delta);  // Render all entities
+
+		// Render all entities
+		this.notes.call("render", delta);  
 	},
 
 	onstep: function(delta) {
 		var curr_song = app.song;
 		if (this.beatmap.curr_beat < this.beatmap.notes.length) {
 			this.create_note();
+		}
+
+		if (this.playing) {
+			// Animate the bars when pressed or released
+			for (var i = 0; i < this.bar_pressed.length; i++) {
+				var len = this.bar_length[i];
+				var bar_speed = 0.4;
+				if (this.bar_pressed[i]) {  // 
+					if (len < 1.0) {
+						len = Math.min(1.0, len + bar_speed);
+					}
+				} else {
+					if (len > 0.0) {
+						len = Math.max(0.0, len - bar_speed * 0.3);
+					}
+				}
+				this.bar_length[i] = len;
+			}
 		}
 
 		window.addEventListener("blur", function() {
@@ -166,21 +198,39 @@ app.game = new ENGINE.Scene({
 			return;
 		}
 
+		// Check if key corresponds to one of the bars
 		var pressed_bar = this.bar_keys.indexOf(key);
-		if (pressed_bar > -1 && this.notes.length > 0 && this.playing) {
-			for (var i = 0; i < (Math.min(this.beatmap.max_note, this.notes.length)); i++) {
-				var curr_note = this.notes[i];
-				var up_bound = app.height * 0.8;
-				var low_bound = app.height * 0.8 - app.width * 0.03;
-				if ((curr_note.bar_number == pressed_bar) && (curr_note.y > low_bound) &&
-				    (curr_note.y < up_bound)) {
-					curr_note.pressed = true;
-					curr_note.key = "white-fill-glow";
-					curr_note.image = app.assets.image("KCCS_set3-05");
+		if (pressed_bar > -1) {
+			// Flag for bar expansion animation
+			this.bar_pressed[pressed_bar] = true;
+
+			// Remove note if key pressed on note
+			if (this.notes.length > 0 && this.playing) {
+				for (var i = 0; i < (Math.min(this.beatmap.max_note, this.notes.length)); i++) {
+					var curr_note = this.notes[i];
+					var up_bound = app.height * 0.8;
+					var low_bound = app.height * 0.8 - app.width * 0.03;
+					if ((curr_note.bar_number == pressed_bar) && (curr_note.y > low_bound) &&
+					    (curr_note.y < up_bound)) {
+						curr_note.pressed = true;
+						curr_note.key = "white-fill-glow";
+						curr_note.image = app.assets.image("KCCS_set3-05");
+					}
 				}
 			}
 		}
-		console.log(key, " ", (app.song.currentTime - this.beatmap.offset));
+		console.log(key, " ", (app.song.currentTime - this.beatmap.offset) /
+			this.beatmap.song_speed_multiplier) + 0.08;
+	},
+
+	onkeyup: function(key) {
+		// Check if key corresponds to one of the bars
+		var pressed_bar = this.bar_keys.indexOf(key);
+		if (pressed_bar > -1) {
+			// Flag for bar release animation
+			this.bar_pressed[pressed_bar] = false;
+		}
+		
 	},
 
 	onleave: function() {
@@ -195,14 +245,15 @@ app.game = new ENGINE.Scene({
 			var beat = this.beatmap.get_beat();
 			// Trigger note creation when the song position is reached
 			var note_delay = app.height * 0.5 / this.note_speed;
-			if (app.song.currentTime - (this.beatmap.offset - note_delay) >= beat.song_pos) {
+			if (app.song.currentTime - (this.beatmap.offset - note_delay) >= 
+				beat.song_pos * this.beatmap.song_speed_multiplier) {
 				this.note_num ++;
 				var keys = beat.beats.split("");
 				for(var i = 0; i < keys.length; i++) {
 					if (keys[i] == 1) {
 						this.notes.add(ENGINE.Note, {
 							key: this.beatmap.get_color(i),
-							x: app.width * (0.125 + i * 0.05) - app.width * 0.03 / 2,
+							x: app.width * (0.1241 + i * 0.05) - this.note_size / 2,
 							speed: this.note_speed,
 							bar_number: i
 						})

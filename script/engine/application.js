@@ -58,9 +58,14 @@ ENGINE.Application.prototype = {
 		this.dispatch("onrender", delta);
 	},
 
-	// Key gets translated to a string
+	// Key press gets translated to a string
 	onkeydown: function(key) {
 		this.dispatch("onkeydown", key);
+	},
+
+	// Key release gets translated to a string
+	onkeyup: function(key) {
+		this.dispatch("onkeyup", key);
 	},
 
 	// Mouse gets translated to a position

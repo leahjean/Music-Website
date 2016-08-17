@@ -9,6 +9,7 @@ var app = new ENGINE.Application({
 	oncreate: function() {
 		//Load assets
 		this.assets.addAudio("Chainsmokers (Daya).mp3");
+		this.assets.addAudio("Stay the Night.mp3");
 		this.assets.addImage("Skylake.png");
 		this.assets.addSprites("sprites.png", this.sprites.fetch('notes'));
 		this.assets.addSprites("KCCS_barsv1-03.png", this.sprites.fetch('ui'));

@@ -15,6 +15,7 @@ ENGINE.Beatmap = function(args) {
 		title_offset: 0,  // x-coordinate to place song name
 		artist_offset: 0,  // x-coordinate to place artist name
 		difficulty: 0,  // Difficulty rating of the beatmap
+		song_speed_multiplier: 1,  // Accounts for timing differences between midi and mp3
 	}, args);
 };
 
