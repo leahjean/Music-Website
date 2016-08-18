@@ -11,6 +11,7 @@ app.game = new ENGINE.Scene({
 	bar_length: [],  // How wide each background bar is (from 0 to 1)
 	note_num: 0,  // Timing purposes
 	note_size: app.width * 0.03,
+	score: null,  // Object to track score
 
 	oncreate: function() {
 		// Create new collection
@@ -32,6 +33,7 @@ app.game = new ENGINE.Scene({
 			curr_song.volume = app.set_volume;
 		}, 1000);
 		curr_song.currentTime = this.beatmap.offset / 2;
+		//curr_song.currentTime = 0;
 
 		app.song.loop = false;
 
@@ -43,6 +45,11 @@ app.game = new ENGINE.Scene({
 			this.bar_pressed.push(false);
 			this.bar_length.push(0.0);
 		}
+
+		// Create score object
+		this.score = this.entities.add(ENGINE.Score, {
+			num_notes: this.beatmap.notes.length,
+		})
 	},
 
 	onrender: function(delta) {
@@ -66,30 +73,36 @@ app.game = new ENGINE.Scene({
 			0, app.height * 0.15, app.width * 0.39, app.height * 0.055);
 
 		// Song title
-		app.layer.fillStyle("rgba(255, 255, 255, 1)")
-				 .font("bold " + Math.round(app.height * 0.030) + 
-				 	"px 'Lucida Sans Unicode', 'Lucida Grande, sans-serif")
+		app.layer.save()
+		         .fillStyle("rgba(255, 255, 255, 1)")
+				 .font(Math.round(app.height * 0.030) + 
+				 	"px 'Neutra Text Bold', 'Lucida Sans Unicode', sans-serif")
+				 .textAlign("start")
 				 .fillText(this.beatmap.song_title, this.beatmap.title_offset,
-				 	app.height * 0.188);
+				 	app.height * 0.188)
+				 .restore();
 
 		// Artist name
-		app.layer.fillStyle("rgba(255, 255, 255, 1)")
-				 .font("lighter " + Math.round(app.height * 0.018) + 
-				 	"px 'Lucida Sans Unicode', 'Lucida Grande, sans-serif")
+		app.layer.save()
+		         .fillStyle("rgba(233, 233, 233, 1)")
+				 .font(Math.round(app.height * 0.02) + 
+				 	"px 'Neutra Text Light', 'Lucida Sans Unicode', sans-serif")
+				 .textAlign("start")
 				 .fillText(this.beatmap.artist_name, this.beatmap.artist_offset,
-				 	app.height * 0.233);
+				 	app.height * 0.233)
+				 .restore();
 
 		// Difficulty rating
 		for (var i = 0; i < 5; i++) {
 			if (i < this.beatmap.difficulty) {
 				var star = app.assets.data.sprites["star-filled"];
 				app.layer.drawImage(glow, star.frame.x, star.frame.y, star.frame.w, 
-					star.frame.h, app.width * (0.3 + 0.015 * i), app.height * 0.215, 
+					star.frame.h, app.width * (0.3 + 0.015 * i), app.height * 0.218, 
 					app.height * 0.018, app.height * 0.018);
 			} else {
 				var no_star = app.assets.data.sprites["star-empty"];
 				app.layer.drawImage(glow, no_star.frame.x, no_star.frame.y, no_star.frame.w, 
-					no_star.frame.h, app.width * (0.3 + 0.015 * i), app.height * 0.215, 
+					no_star.frame.h, app.width * (0.3 + 0.015 * i), app.height * 0.218, 
 					app.height * 0.018, app.height * 0.018);
 			}
 		}
@@ -113,12 +126,22 @@ app.game = new ENGINE.Scene({
 				app.height * 0.8 - bot_frame.h / 2, app.width * 0.03, app.height * 0.01);
 			
 			// The letters
+			var bar_key = this.bar_keys.charAt(i).toUpperCase();
+			app.layer.save()
+			         .fillStyle("rgba(0, 0, 0, 1")
+			         .font(Math.round(app.height * 0.025) + 
+				 	     "px 'Neutra Text', 'Lucida Sans Unicode', sans-serif")
+			         .textAlign("center")
+			         .fillText(bar_key, app.width * (0.124 + 0.05 * i), app.height * 0.84)
+			         .restore();
+			/*
 			var bar_key = "bar-" + i;
 			var letter = app.assets.data.sprites[bar_key];
 			var l_frame = letter.frame;
 			app.layer.drawImage(bars, l_frame.x, l_frame.y, l_frame.w, l_frame.h,
 				app.width * (0.125 + 0.05 * i) - l_frame.w * app.width / 2 / 1307,
 				app.height * 0.82, l_frame.w * app.width / 1307, l_frame.h * app.height / 861);
+				*/
 		}
 
 		/*
@@ -131,6 +154,7 @@ app.game = new ENGINE.Scene({
 		*/
 
 		// Render all entities
+		this.entities.call("render", delta);
 		this.notes.call("render", delta);  
 	},
 
@@ -175,11 +199,11 @@ app.game = new ENGINE.Scene({
 	},
 
 	onmousedown: function(x, y, button) {
-		if (app.game.playing && x < app.width/2) {
+		if (this.playing && x < app.width/2) {
 			this.fade_out();
 			this.stopped = true;
 		}
-		if (!app.game.playing && x > app.width/2) {
+		if (!this.playing && x > app.width/2) {
 			this.fade_in();
 			this.stopped = false;
 		}
@@ -255,7 +279,8 @@ app.game = new ENGINE.Scene({
 							key: this.beatmap.get_color(i),
 							x: app.width * (0.1241 + i * 0.05) - this.note_size / 2,
 							speed: this.note_speed,
-							bar_number: i
+							bar_number: i,
+							score: this.score,
 						})
 					}
 				}

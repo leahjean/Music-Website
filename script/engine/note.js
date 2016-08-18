@@ -10,7 +10,9 @@ ENGINE.Note = function(args) {
 		bar_number: null,  // Which bar the note is spawned on
 		pressed: false,  // Flag to indicate the note was cleared
 		paused: false,  // Paused notes don't move
-		opacity: 1
+		opacity: 1,
+		score: null,  // Scoring object
+		scored: false,  // Flag signifies whether the note has affected the score yet
 	}, args);
 };
 
@@ -24,10 +26,21 @@ ENGINE.Note.prototype = {
 				if (this.opacity <= 0.025) {
 					this.remove();
 				}
-				if(this.pressed) {
+
+				// If note is pressed, stop movement and increase score
+				if (this.pressed) {
 					this.speed = 0;
+					if (!this.scored) {
+						this.score.hit();
+						this.scored = true;
+					}
 				} else {
+					// If note is missed, reset combo
 					this.speed = 10;
+					if (!this.scored) {
+						this.score.miss();
+						this.scored = true;
+					}
 				}
 			}
 		}
@@ -37,12 +50,11 @@ ENGINE.Note.prototype = {
 	render: function(delta) {
 		var note = app.assets.data.sprites[this.key];
 		var curr_frame = note.frame;
-		app.layer
-		  .save()
-		  .globalAlpha(this.opacity)
-		  .drawImage(this.image, curr_frame.x, curr_frame.y, curr_frame.w, curr_frame.h,
-		  	this.x, this.y, this.note_size, this.note_size)
-		  .restore();
+		app.layer.save()
+		         .globalAlpha(this.opacity)
+		  		 .drawImage(this.image, curr_frame.x, curr_frame.y, curr_frame.w, curr_frame.h,
+		  		   	this.x, this.y, this.note_size, this.note_size)
+		  		 .restore();
 	},
 
 	// Stop note movement

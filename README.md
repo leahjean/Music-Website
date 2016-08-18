@@ -2,6 +2,8 @@
 
 Game is fully playable just by opening index.html in a web browser.
 
+Ver. 1.06 (8-18-16): Added scoring and combo classes. Re-did fonts.
+
 Ver. 1.05 (8-17-16): Added "glow" effect for the bar when pressing notes. Added new song.
 
 Ver. 1.04 (8-16-16): Updated UI to include song information and keys to press for the bar. Added "glow effect" for pressed notes. Smoothed out pausing so that all notes stop moving and music stops playing properly.

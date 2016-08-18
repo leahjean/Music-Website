@@ -10,7 +10,7 @@ app.game.stay_the_night_map = new ENGINE.Beatmap({
     title_offset: app.width * 0.12,
     artist_offset: app.width * 0.125,
     song_speed_multiplier: 214.213 / 217.6, 
-    difficulty: 1,
+    difficulty: 2,
     note_style: ["blue", "light-blue", "teal", "sky-blue", "green", "blue"],
     max_note: 14,
     notes: [  // Array of notes
@@ -105,9 +105,6 @@ app.game.stay_the_night_map = new ENGINE.Beatmap({
     {song_pos: 42.625, beats: "010000"},
     {song_pos: 43.341, beats: "001000"},
     {song_pos: 43.604, beats: "000010"},
-    {song_pos: 44.074, beats: "100000"},
-    {song_pos: 44.517, beats: "100000"},
-    {song_pos: 44.753, beats: "100000"},
     {song_pos: 45.714, beats: "100000"},
     {song_pos: 46.173, beats: "000001"},
     {song_pos: 46.414, beats: "000010"},
