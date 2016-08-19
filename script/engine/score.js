@@ -13,7 +13,7 @@ ENGINE.Score.prototype = {
 	hit: function() {
 		this.combo++;
 		var avg_score = this.max_score / this.num_notes;
-		var score_change = avg_score * (1 + 0.2 * (this.combo / this.num_notes - 0.5));
+		var score_change = avg_score * (1 + 0.3 * (this.combo / this.num_notes - 0.5));
 		this.score += score_change;
 	},
 	miss: function() {

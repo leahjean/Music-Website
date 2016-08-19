@@ -21,7 +21,7 @@ app.game = new ENGINE.Scene({
 
 	onenter: function() {
 		// Load in the current beatmap
-		this.beatmap = this.stay_the_night_map;
+		this.beatmap = this.love_song_map;
 
 		// Load in the current song
 		app.song = app.assets.audio(this.beatmap.song_name);
@@ -134,14 +134,6 @@ app.game = new ENGINE.Scene({
 			         .textAlign("center")
 			         .fillText(bar_key, app.width * (0.124 + 0.05 * i), app.height * 0.84)
 			         .restore();
-			/*
-			var bar_key = "bar-" + i;
-			var letter = app.assets.data.sprites[bar_key];
-			var l_frame = letter.frame;
-			app.layer.drawImage(bars, l_frame.x, l_frame.y, l_frame.w, l_frame.h,
-				app.width * (0.125 + 0.05 * i) - l_frame.w * app.width / 2 / 1307,
-				app.height * 0.82, l_frame.w * app.width / 1307, l_frame.h * app.height / 861);
-				*/
 		}
 
 		/*
@@ -334,5 +326,16 @@ app.game = new ENGINE.Scene({
 		curr_song.play();
 		this.notes.call("play");
 		this.playing = true;
+	},
+
+	// Convert song time to minutes:seconds display
+	time: function(currentTime) {
+		var whole = Math.round(currentTime);
+		var minute = parseInt(whole / 60);
+		var second = whole % 60;
+		if (second < 10) {
+			second = "0" + second
+		}
+		return minute + ":" + second;
 	}
 });
