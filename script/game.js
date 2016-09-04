@@ -3,7 +3,7 @@ app.game = new ENGINE.Scene({
 	playing: true,
 	stopped: false,
 	fade_delay: 0.0000025,  // Audio fade speed
-	note_speed: app.height / 4,
+	note_speed: 0,  // Speed obtained from beatmap
 	beatmap: null,  // Current beatmap playing
 	bar: null,  // Bar sprite to be used
 	bar_keys: "asdjkl",  // Which keys correspond to the bars
@@ -17,39 +17,43 @@ app.game = new ENGINE.Scene({
 		// Create new collection
 		this.entities = new ENGINE.Collection(this);
 		this.notes = new ENGINE.Collection(this);
-	},
-
-	onenter: function() {
-		// Load in the current beatmap
-		this.beatmap = this.love_song_map;
-
-		// Load in the current song
-		app.song = app.assets.audio(this.beatmap.song_name);
-
-		var curr_song = app.song;
-		// Avoid Promise Error when repeatedly pausing and playing
-		setTimeout(function() {
-			curr_song.play();
-			curr_song.volume = app.set_volume;
-		}, 1000);
-		curr_song.currentTime = this.beatmap.offset / 2;
-		//curr_song.currentTime = 0;
-
-		app.song.loop = false;
-
-		// Select bar asset according to the beatmap
-		this.bar = app.assets.data.sprites[this.beatmap.bar_style];
 
 		// Initialize back bar width and press status
 		for (var i = 0; i < this.bar_keys.length; i++) {
 			this.bar_pressed.push(false);
 			this.bar_length.push(0.0);
 		}
+	},
+
+	onenter: function() {
+		// Load in the current beatmap
+		this.beatmap = app.active_map;
+
+		// Load the note speed
+		this.note_speed = this.beatmap.note_speed;
+
+		// Load in the current song
+		app.song = app.assets.audio(this.beatmap.mp3_name);
+
+		var curr_song = app.song;
+		
+		// Avoid Promise Error when repeatedly pausing and playing
+		setTimeout(function() {
+			curr_song.play();
+			curr_song.volume = app.set_volume;
+		}, 1000);
+		//curr_song.currentTime = this.beatmap.offset / 2;
+		console.log(curr_song.volume);
+
+		app.song.loop = false;
 
 		// Create score object
 		this.score = this.entities.add(ENGINE.Score, {
 			num_notes: this.beatmap.notes.length,
 		})
+
+		// Select bar asset according to the beatmap
+		this.bar = app.assets.data.sprites[this.beatmap.bar_style];
 	},
 
 	onrender: function(delta) {
@@ -191,6 +195,7 @@ app.game = new ENGINE.Scene({
 	},
 
 	onmousedown: function(x, y, button) {
+		/**
 		if (this.playing && x < app.width/2) {
 			this.fade_out();
 			this.stopped = true;
@@ -198,12 +203,12 @@ app.game = new ENGINE.Scene({
 		if (!this.playing && x > app.width/2) {
 			this.fade_in();
 			this.stopped = false;
-		}
+		}**/
 	},
 
 	onkeydown: function(key) {
-		// Check if one of the control keys was pressed
-		if (key == 'p') {
+		// Pause the game
+		if (key == "p") {
 			if (this.playing) {
 				this.fade_out();
 				this.stopped = true;
@@ -212,6 +217,11 @@ app.game = new ENGINE.Scene({
 				this.stopped = false;
 			}
 			return;
+		}
+
+		// Exit the game
+		if (key == "escape") {
+			app.selectScene(app.song_select);
 		}
 
 		// Check if key corresponds to one of the bars
@@ -250,9 +260,18 @@ app.game = new ENGINE.Scene({
 	},
 
 	onleave: function() {
+		// Clear notes and score
 		this.entities.wipe();
 		this.notes.wipe();
-		app.song.pause();
+
+		// Reset the beatmap's beat tracker
+		this.beatmap.curr_beat = 0;	
+
+		// Set playing back to true in case exited while paused
+		this.playing = true;
+
+		// 
+		app.song.load();
 	},
 
 	// Create a note if the notes in the map haven't all been exhausted
@@ -282,22 +301,6 @@ app.game = new ENGINE.Scene({
 	},
 
 	fade_out: function() {
-		/*
-		// Only run fade_out if the song is playing
-		if (this.playing) {
-
-			var curr_song = app.song;
-			while(curr_song.volume > 0) {
-				if (curr_song.volume - this.fade_delay * app.set_volume < 0) {
-					curr_song.volume = 0;
-				} else {
-					curr_song.volume -= this.fade_delay * app.set_volume;
-				}
-			}
-			this.notes.call("pause");
-			curr_song.pause();
-			this.playing = false;
-		}*/
 		var curr_song = app.song;
 		this.notes.call("pause");
 		curr_song.pause();
@@ -305,23 +308,6 @@ app.game = new ENGINE.Scene({
 	},
 
 	fade_in: function() {
-		/*
-		// Only run fade_in if song isn't playing
-		if (!this.playing) {
-			var curr_song = app.song;
-			curr_song.play();
-			this.notes.call("play");
-
-			while(curr_song.volume < app.set_volume) {
-				if (curr_song.volume + this.fade_delay * app.set_volume > app.set_volume) {
-					curr_song.volume = app.set_volume;
-				} else {
-					curr_song.volume += this.fade_delay * app.set_volume;
-				}
-			}
-			this.playing = true;
-		}
-		*/
 		var curr_song = app.song;
 		curr_song.play();
 		this.notes.call("play");
@@ -329,7 +315,7 @@ app.game = new ENGINE.Scene({
 	},
 
 	// Convert song time to minutes:seconds display
-	time: function(currentTime) {
+	conv_time: function(currentTime) {
 		var whole = Math.round(currentTime);
 		var minute = parseInt(whole / 60);
 		var second = whole % 60;

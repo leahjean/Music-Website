@@ -1,11 +1,18 @@
-app.game.rain_map = new ENGINE.Beatmap({
+app.beatmap_list["rain_map"] = new ENGINE.Beatmap({
 	bpm: 76,  // Beats per minute
 	crotchet: 60 / this.bpm,  // Time duration of a beat, calculated from the bpm
 	offset: 0,  // Song delay until start of notes
 	bar_style: "medium",  // Bar-style
 	bg: "Skylake",  // Background image
-	song_name: "Rain",
+    mp3_name: "Rain (Taeyeon)",  
+    song_title: "RAIN",
+    artist_name: "Taeyeon",
+    title_offset: app.width * 0.12,
+    artist_offset: app.width * 0.125,
+    song_speed_multiplier: 1, 
+    difficulty: 1,
 	note_style: ["blue", "light-blue", "teal", "sky-blue", "green", "blue"],
+    note_speed: app.height / 4,
 	notes: [  // Array of notes
 	// Opening sequence
     {song_pos: -0.949, beats: "001010"},

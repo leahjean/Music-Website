@@ -3,7 +3,7 @@ ENGINE.Application = function(args) {
 	var app = this;
 	_.extend(this, args);
 
-	// Create 16:9 canvas wrapper and add to document
+	// Create 1882 : 1240 canvas wrapper and add to document
 	var dims = this.window_dim(1882 / 1240);
 	this.layer = cq(dims[0], dims[1]);
 	this.layer.appendTo("body");
@@ -30,6 +30,7 @@ ENGINE.Application = function(args) {
 }
 
 ENGINE.Application.prototype = {
+	aspect_ratio: 1882 / 1240,
 	// Calls the method in the current scene with the given arguments
 	// e.g. this.dispatch("onmousemove", 32, 64); will trigger the onmousemove method 
 	dispatch: function(method) {

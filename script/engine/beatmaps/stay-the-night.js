@@ -1,10 +1,10 @@
-app.game.stay_the_night_map = new ENGINE.Beatmap({
+app.beatmap_list["stay_the_night_map"] = new ENGINE.Beatmap({
     bpm: 126,  // Beats per minute
     crotchet: 60 / this.bpm,  // Time duration of a beat, calculated from the bpm
     offset: 5.87,  // Song delay until start of notes
     bar_style: "medium",  // Bar-style
     bg: "Skylake",  // Background image
-    song_name: "Stay the Night",
+    mp3_name: "Stay the Night",
     song_title: "STAY THE NIGHT",
     artist_name: "Zedd ft. Hayley Williams",
     title_offset: app.width * 0.12,
@@ -13,6 +13,7 @@ app.game.stay_the_night_map = new ENGINE.Beatmap({
     difficulty: 2,
     note_style: ["blue", "light-blue", "teal", "sky-blue", "green", "blue"],
     max_note: 14,
+    note_speed: app.height / 4,
     notes: [  // Array of notes
 
     {song_pos: 0.019, beats: "001000"},

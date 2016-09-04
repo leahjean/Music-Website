@@ -1,10 +1,10 @@
-app.game.love_song_map = new ENGINE.Beatmap({
+app.beatmap_list['love_song'] = new ENGINE.Beatmap({
     bpm: 123,  // Beats per minute
     crotchet: 60 / this.bpm,  // Time duration of a beat, calculated from the bpm
     offset: 3.68,  // Song delay until start of notes
     bar_style: "medium",  // Bar-style
     bg: "Skylake",  // Background image
-    song_name: "Love Song",
+    mp3_name: "Love Song",  
     song_title: "LOVE SONG",
     artist_name: "Sara Bareilles",
     title_offset: app.width * 0.12,
@@ -13,6 +13,7 @@ app.game.love_song_map = new ENGINE.Beatmap({
     difficulty: 1,
     note_style: ["blue", "light-blue", "teal", "sky-blue", "green", "blue"],
     max_note: 14,
+    note_speed: app.height / 6,
     notes: [  // Array of notes
     /* Opening Piano Section
     {song_pos: 1.951, beats: "000010"},
@@ -48,7 +49,7 @@ app.game.love_song_map = new ENGINE.Beatmap({
     {song_pos: 15.935, beats: "000001"},
     {song_pos: 16.423, beats: "000100"},
     {song_pos: 16.585, beats: "000010"},
-    {song_pos: 17.073, beats: "001000"},
+    {song_pos: 16.93, beats: "001000"},
     {song_pos: 18.049, beats: "001000"},
     {song_pos: 18.537, beats: "100000"},
     {song_pos: 19.024, beats: "001000"},

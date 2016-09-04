@@ -1,17 +1,19 @@
-app.game.chainsmokers_dlmd_map = new ENGINE.Beatmap({
+app.beatmap_list["chainsmokers_dlmd_map"] = new ENGINE.Beatmap({
     bpm: 160,  // Beats per minute
     crotchet: 60 / this.bpm,  // Time duration of a beat, calculated from the bpm
     offset: 5.0,  // Song delay until start of notes
     bar_style: "medium",  // Bar-style
     bg: "Skylake",  // Background image
-    song_name: "Chainsmokers (Daya)",
+    mp3_name: "Chainsmokers (Daya)",
     song_title: "DON'T LET ME DOWN",
     artist_name: "Chainsmokers ft. Daya",
     title_offset: app.width * 0.08,
     artist_offset: app.width * 0.085,
+    song_speed_multiplier: 1, 
     difficulty: 3,
     note_style: ["blue", "light-blue", "teal", "sky-blue", "green", "blue"],
     max_note: 14,
+    note_speed: app.height / 4,
     notes: [  // Array of notes
 
     {song_pos: 0.56, beats: "010010"},

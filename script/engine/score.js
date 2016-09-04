@@ -5,7 +5,7 @@ ENGINE.Score = function(args) {
 		combo_display: false,  // Display combo number or not
 		combo_opacity: 1,  
 		num_notes: 0,  // Number of notes in beatmap
-		max_score: 1000000,  // Maximum possible score
+		max_score: 1000000.0,  // Maximum possible score
 	}, args);
 };
 
@@ -15,6 +15,9 @@ ENGINE.Score.prototype = {
 		var avg_score = this.max_score / this.num_notes;
 		var score_change = avg_score * (1 + 0.3 * (this.combo / this.num_notes - 0.5));
 		this.score += score_change;
+		if (this.score > this.max_score) {
+			this.score = this.max_score;
+		}
 	},
 	miss: function() {
 		this.combo = 0;
