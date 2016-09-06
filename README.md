@@ -18,6 +18,6 @@ Ver. 1.01 (8-5-16): Added note class to generate notes at specific time interval
 
 Ver. 1.00 (7-24-16): Initial game engine using Rezoner's game architecture. "Keyboard-Hero" by mjanisz was referenced to transition Rezoner's engine to a rhythm game.
 
-Visual design/language and front-end web design by Chiarei
+Visual design/language by Chiarei
 
 Game scripting and beatmapping by Leahjean
