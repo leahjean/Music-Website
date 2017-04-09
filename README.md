@@ -1,6 +1,8 @@
-# Rhythm game
+# Note Oratoria
 
 Game is fully playable just by opening index.html in a web browser.
+
+Ver. 1.08 (4-8-17): Revamped song-select screen to have options menu animations and scrolling animations. Fixed bug where multiple notes could register with one press. Implemented variable scores depending on timing of press and added corresponding visual effects for different scores. Moved bars to center. Increased bar and note size. 
 
 Ver. 1.07 (9-4-16): Added basic song-select screen. Still need to add scrolling animations and additional UI elements.
 
