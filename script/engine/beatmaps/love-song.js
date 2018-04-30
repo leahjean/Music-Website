@@ -1,19 +1,19 @@
-app.beatmap_list['love_song'] = new ENGINE.Beatmap({
+app.beatmaps['love_song'] = new ENGINE.Beatmap({
     bpm: 123,  // Beats per minute
     crotchet: 60 / this.bpm,  // Time duration of a beat, calculated from the bpm
-    offset: 3.68,  // Song delay until start of notes
-    bar_style: "medium",  // Bar-style
+    songStart: 3.68,  // Song delay until start of notes
+    barSprite: "medium",  // Bar-style
     bg: "Skylake",  // Background image
-    mp3_name: "Love Song",  
-    song_title: "LOVE SONG",
-    artist_name: "Sara Bareilles",
-    title_offset: app.width * 0.12,
-    artist_offset: app.width * 0.125,
-    song_speed_multiplier: 1, 
+    mp3Name: "Love Song",
+    songTitle: "LOVE SONG",
+    artistName: "Sara Bareilles",
+    titleOffset: app.width * 0.12,
+    artistOffset: app.width * 0.125,
+    speedMultiplier: 1,
     difficulty: 1,
-    note_style: ["blue", "light-blue", "teal", "sky-blue", "green", "blue"],
-    max_note: 14,
-    note_speed: app.height / 6,
+    noteSprites: ["blue", "light-blue", "teal", "sky-blue", "green", "blue"],
+    maxNotes: 14,
+    noteSpeed: app.height / 6,
     notes: [  // Array of notes
     /* Opening Piano Section
     {song_pos: 1.951, beats: "000010"},

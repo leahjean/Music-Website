@@ -1,7 +1,8 @@
+// Stores all game sprites
 ENGINE.Sprites = function() {
 	this.sprites = {
 		data: []
-	}
+	},
 	this.sprites.data['notes'] = [
 {
 	key: "dark-orange",
@@ -46,7 +47,40 @@ ENGINE.Sprites = function() {
 {
 	key: "blue",
 	frame: {x: 1048, y: 101, w: 85, h: 85},
-}];
+},
+{
+	key: "outlined-royal-blue",
+	frame: {x: 128, y: 273, w: 77, h: 77},
+},
+{
+	key: "outlined-navy-blue",
+	frame: {x: 233, y: 273, w: 77, h: 77},
+},
+{
+	key: "outlined-dark-teal",
+	frame: {x: 336, y: 273, w: 77, h: 77},
+},
+{
+	key: "outlined-teal",
+	frame: {x: 440, y: 273, w: 77, h: 77},
+},
+{
+	key: "outlined-light-teal",
+	frame: {x: 544, y: 273, w: 77, h: 77},
+},
+{
+	key: "outlined-lavendar",
+	frame: {x: 959, y: 273, w: 77, h: 77},
+},
+{
+	key: "outlined-purple",
+	frame: {x: 1056, y: 273, w: 77, h: 77},
+},
+{
+	key: "outlined-green",
+	frame: {x: 1146, y: 273, w: 77, h: 77},
+},
+],
 
 	this.sprites.data['ui'] = [
 {
@@ -112,13 +146,16 @@ ENGINE.Sprites = function() {
 {
 	key: "bar-5",
 	frame: {x: 856, y: 77, w: 10, h: 15},
-},
-]
+}],
 
 	this.sprites.data['glow'] = [
 {
-	key: "white-fill-glow",
+	key: "white-fill",
 	frame: {x: 73, y: 353, w: 77, h: 77},
+},
+{
+	key: "grey-fill",
+	frame: {x: 216, y: 219, w: 77, h: 77},
 },
 {
 	key: "color-fill-glow",
@@ -132,11 +169,15 @@ ENGINE.Sprites = function() {
 	key: "white-glow",
 	frame: {x: 1092, y: 349, w: 42, h: 42},
 },
-]}
+{
+	key: "white-fill-glow",
+	frame: {x: 69, y: 219, w: 77, h: 77}
+},
+]};
 
 // Fetch a set of locations for the specified group
 ENGINE.Sprites.prototype = {
 	fetch: function(key) {
 		return this.sprites.data[key];
 	}
-}
+};

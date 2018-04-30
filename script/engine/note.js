@@ -1,18 +1,19 @@
+// Note objects for the game
 ENGINE.Note = function(args) {
 	_.extend(this, {
-		x: 0,  // Track note x and y position
+		x: 0,
 		y: app.height * 0.28,
-		direction: 2 * Math.PI * 0.75,  // Initialize note direction to down (i.e. 270 degrees)
-		speed: 0,  // Pixels per second
+		direction: 2 * Math.PI * 0.75,
+		speed: 0,
 		image: app.assets.image("sprites"),
-		key: null,
-		note_size: app.width * 0.03,
-		bar_number: null,  // Which bar the note is spawned on
-		pressed: false,  // Flag to indicate the note was cleared
-		paused: false,  // Paused notes don't move
+		spriteKey: null,
+		size: null,
+		pressedState: "moving",
+        scored: false,
+		paused: false,
 		opacity: 1,
 		score: null,  // Scoring object
-		scored: false,  // Flag signifies whether the note has affected the score yet
+        barHeight: 0
 	}, args);
 };
 
@@ -21,39 +22,42 @@ ENGINE.Note.prototype = {
 	step: function(delta) {
 		if (!this.paused) {
 			this.y -= Math.sin(this.direction) * this.speed * delta / 1000;
-			if (this.y > app.height * 0.8 || this.pressed) {
+			if (this.y > this.barHeight + app.height * 0.35 || this.pressedState != "moving") {
 				this.opacity -= 0.025;
 				if (this.opacity <= 0.025) {
 					this.remove();
 				}
 
-				// If note is pressed, stop movement and increase score
-				if (this.pressed) {
-					this.speed = 0;
-					if (!this.scored) {
-						this.score.hit();
-						this.scored = true;
-					}
-				} else {
-					// If note is missed, reset combo
-					this.speed = 10;
-					if (!this.scored) {
-						this.score.miss();
-						this.scored = true;
-					}
-				}
+				if (!this.scored) {
+                    if (this.pressedState != "moving") {
+                        this.speed = 0;
+                        if (this.pressedState == "good" || this.pressedState == "bad") {
+                            this.score.resetCombo();
+                        } else {
+                            this.score.incCombo();
+                        }
+                    } else {
+                        // If note is missed, reset combo
+                        this.speed = 10;
+                        this.pressedState = "miss";
+                        this.score.resetCombo();
+                    }
+
+                    this.score.updateScore(this.pressedState);
+                    this.scored = true;
+                }
 			}
 		}
 	},
 
 	// Draw the note
 	render: function(delta) {
-		var note = app.assets.data.sprites[this.key];
-		var curr_frame = note.frame;
+		var note = app.assets.data.sprites[this.spriteKey];
+		var currFrame = note.frame;
 		app.layer.save()
 		         .globalAlpha(this.opacity)
-		  		 .drawImage(this.image, curr_frame.x, curr_frame.y, curr_frame.w, curr_frame.h,
-		  		   	this.x, this.y, this.note_size, this.note_size)
+		  		 .drawImage(this.image, currFrame.x, currFrame.y, currFrame.w, currFrame.h,
+		  		   	this.x, this.y, this.size, this.size)
 		  		 .restore();
 	},
 
@@ -67,9 +71,9 @@ ENGINE.Note.prototype = {
 		this.paused = false;
 	},
 
+    // Mark current note for removal
 	remove: function() {
-		// Mark for removal
 		this._remove = true;
 		this.collection.dirty = true;
 	}
-}
+};

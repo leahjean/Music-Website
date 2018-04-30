@@ -1,26 +1,26 @@
-app.beatmap_list["rain_map"] = new ENGINE.Beatmap({
+app.beatmaps["rain_map"] = new ENGINE.Beatmap({
 	bpm: 76,  // Beats per minute
 	crotchet: 60 / this.bpm,  // Time duration of a beat, calculated from the bpm
-	offset: 0,  // Song delay until start of notes
-	bar_style: "medium",  // Bar-style
+	songStart: 4.96,  // Song delay until start of notes
+	barSprite: "medium",  // Bar-style
 	bg: "Skylake",  // Background image
-    mp3_name: "Rain (Taeyeon)",  
-    song_title: "RAIN",
-    artist_name: "Taeyeon",
-    title_offset: app.width * 0.12,
-    artist_offset: app.width * 0.125,
-    song_speed_multiplier: 1, 
+    mp3Name: "Rain (Taeyeon)",
+    songTitle: "RAIN",
+    artistName: "Taeyeon",
+    titleOffset: app.width * 0.12,
+    artistOffset: app.width * 0.125,
+    speedMultiplier: 1,
     difficulty: 1,
-	note_style: ["blue", "light-blue", "teal", "sky-blue", "green", "blue"],
-    note_speed: app.height / 4,
+	noteSprites: ["blue", "light-blue", "teal", "sky-blue", "green", "blue"],
+    maxNotes: 14,
+    noteSpeed: app.height / 4,
 	notes: [  // Array of notes
 	// Opening sequence
-    {song_pos: -0.949, beats: "001010"},
-    {song_pos: -0.903, beats: "000011"},
-    {song_pos: -0.85, beats: "100100"},
-    {song_pos: -0.798, beats: "010001"},
-    {song_pos: -0.738, beats: "011000"},
-    {song_pos: 0.334, beats: "010001"},
+    {song_pos: 0.44, beats: "100000"},
+    {song_pos: 0.50, beats: "010000"},
+    {song_pos: 0.56, beats: "001000"},
+
+    /**
     {song_pos: 0.34, beats: "101000"},
     {song_pos: 1.123, beats: "010010"},
     {song_pos: 1.13, beats: "011000"},
@@ -2495,5 +2495,6 @@ app.beatmap_list["rain_map"] = new ENGINE.Beatmap({
     {song_pos: 213.373, beats: "100100"},
     {song_pos: 213.413, beats: "010001"},
     {song_pos: 213.465, beats: "010100"},
-	]
+    */
+	] 
 })

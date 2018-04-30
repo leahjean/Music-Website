@@ -1,19 +1,19 @@
-app.beatmap_list["chainsmokers_dlmd_map"] = new ENGINE.Beatmap({
+app.beatmaps["chainsmokers_dlmd_map"] = new ENGINE.Beatmap({
     bpm: 160,  // Beats per minute
     crotchet: 60 / this.bpm,  // Time duration of a beat, calculated from the bpm
-    offset: 5.0,  // Song delay until start of notes
-    bar_style: "medium",  // Bar-style
+    songStart: 5.0,  // Song delay until start of notes
+    barSprite: "medium",  // Bar-style
     bg: "Skylake",  // Background image
-    mp3_name: "Chainsmokers (Daya)",
-    song_title: "DON'T LET ME DOWN",
-    artist_name: "Chainsmokers ft. Daya",
-    title_offset: app.width * 0.08,
-    artist_offset: app.width * 0.085,
-    song_speed_multiplier: 1, 
+    mp3Name: "Chainsmokers (Daya)",
+    songTitle: "DON'T LET ME DOWN",
+    artistName: "Chainsmokers ft. Daya",
+    titleOffset: app.width * 0.08,
+    artistOffset: app.width * 0.085,
+    speedMultiplier: 1,
     difficulty: 3,
-    note_style: ["blue", "light-blue", "teal", "sky-blue", "green", "blue"],
-    max_note: 14,
-    note_speed: app.height / 4,
+    noteSprites: ["blue", "light-blue", "teal", "sky-blue", "green", "blue"],
+    maxNotes: 14,
+    noteSpeed: app.height / 4,
     notes: [  // Array of notes
 
     {song_pos: 0.56, beats: "010010"},
@@ -80,7 +80,7 @@ app.beatmap_list["chainsmokers_dlmd_map"] = new ENGINE.Beatmap({
     {song_pos: 29.25, beats: "100001"},
     {song_pos: 29.438, beats: "100000"},
     {song_pos: 29.62, beats: "000001"},
-    {song_pos: 29.813, beats: "001000"},    
+    {song_pos: 29.813, beats: "001000"},
     {song_pos: 30.22, beats: "000010"},
     {song_pos: 30.563, beats: "100100"},
     {song_pos: 31.17, beats: "000100"},
@@ -804,4 +804,4 @@ app.beatmap_list["chainsmokers_dlmd_map"] = new ENGINE.Beatmap({
     {song_pos: 191.063, beats: "010000"},
     {song_pos: 191.625, beats: "001000"},
     ]
-})
+});

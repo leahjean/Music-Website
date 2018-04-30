@@ -4,7 +4,7 @@ ENGINE.Assets = function(loader) {
 	// Lookup directories so we don't have to provide full paths
 	this.paths = {
 		images: "assets/images/",
-		audio: "assets/audio/",
+		audio: "assets/audio/"
 	};
 
 	// Hold raw assets

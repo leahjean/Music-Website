@@ -1,19 +1,24 @@
-app.beatmap_list["stay_the_night_map"] = new ENGINE.Beatmap({
+app.beatmaps["stay_the_night_map"] = new ENGINE.Beatmap({
     bpm: 126,  // Beats per minute
     crotchet: 60 / this.bpm,  // Time duration of a beat, calculated from the bpm
-    offset: 5.87,  // Song delay until start of notes
-    bar_style: "medium",  // Bar-style
+    songStart: 5.87,  // Song delay until start of notes
+    barSprite: "medium",  // Bar-style
     bg: "Skylake",  // Background image
-    mp3_name: "Stay the Night",
-    song_title: "STAY THE NIGHT",
-    artist_name: "Zedd ft. Hayley Williams",
-    title_offset: app.width * 0.12,
-    artist_offset: app.width * 0.125,
-    song_speed_multiplier: 214.213 / 217.6, 
+    mp3Name: "Stay the Night",
+    songTitle: "STAY THE NIGHT",
+    artistName: "Zedd ft. Hayley Williams",
+    titleOffset: app.width * 0.12,
+    artistOffset: app.width * 0.125,
+    speedMultiplier: 214.213 / 217.6,
     difficulty: 2,
-    note_style: ["blue", "light-blue", "teal", "sky-blue", "green", "blue"],
-    max_note: 14,
-    note_speed: app.height / 4,
+    noteSprites: ["outlined-royal-blue", 
+                  "outlined-light-teal", 
+                  "outlined-teal", 
+                  "outlined-purple", 
+                  "outlined-green", 
+                  "outlined-royal-blue"],
+    maxNotes: 14,
+    noteSpeed: app.height / 4,
     notes: [  // Array of notes
 
     {song_pos: 0.019, beats: "001000"},

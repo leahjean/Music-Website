@@ -2,11 +2,12 @@
 // See application.js for all variables included
 var app = new ENGINE.Application({
 	playing: true,
-	set_volume: 0.5,
+	volume: 0.5,
 	song: null,  // Mp3 object to be controlled
-	song_name: null,  // Current song to be played
-	active_map: null,  // Current beatmap to play
-	beatmap_list: {},  // Dictionary of beatmap objects
+	songName: null,  // Current song to be played
+	currBeatmap: null,  // Current beatmap to play
+	beatmaps: {},  // Dictionary of beatmap objects
+	noteSpeedMultiplier: 1,
 
 	// Load all assets on creation
 	oncreate: function() {
@@ -17,7 +18,7 @@ var app = new ENGINE.Application({
 		this.assets.addAudio("Rain (Taeyeon).mp3");
 
 		this.assets.addImage("Skylake.png");
-		this.assets.addImage("KCCS_galaxy2.png");
+		this.assets.addImage("galaxy3.png");
 
 		this.assets.addSprites("sprites.png", this.sprites.fetch('notes'));
 		this.assets.addSprites("KCCS_barsv1-03.png", this.sprites.fetch('ui'));
@@ -27,6 +28,6 @@ var app = new ENGINE.Application({
 
 	// When assets are loaded, select the game screen
 	onready: function() {
-		this.selectScene(this.song_select);
+		this.selectScene(this.songSelect);
 	}
 });

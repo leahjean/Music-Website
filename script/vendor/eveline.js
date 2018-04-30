@@ -12,7 +12,6 @@
   })();
 
   eveline = function(events, context, element) {
-
     if (element === undefined) {
       element = document.body;
     } else if (typeof element === "string") {
@@ -22,7 +21,9 @@
     var tempContext = context || events;
 
     for (var name in events) {
-      if (typeof eveline[name] === "function") eveline[name](element, events[name], tempContext);
+      if (typeof eveline[name] === "function") {
+        eveline[name](element, events[name], tempContext);
+      }
     }
 
     /* apply scaling */

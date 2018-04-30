@@ -1,4 +1,4 @@
-// Loader
+// Loader to abstract out html5 image, audio, and video loading
 ENGINE.Loader = function(layer) {
 	this.total = 0;  // Number of items to load
 	this.count = 0;  // Items in queue

@@ -4,18 +4,16 @@ ENGINE.Application = function(args) {
 	_.extend(this, args);
 
 	// Create 1882 : 1240 canvas wrapper and add to document
-	var dims = this.window_dim(1882 / 1240);
+	var dims = this.windowDim(1882 / 1240);
 	this.layer = cq(dims[0], dims[1]);
-	this.layer.appendTo("body");
+	this.layer.appendTo("#game");
 
-	// Specify width and height of the game
 	this.width = dims[0];
 	this.height = dims[1];
 
 	// Bind events to the application using the eveline library
 	eveline(this);
 
-	// Create loader and asset managers
 	this.loader = new ENGINE.Loader(this.layer);
 	this.sprites = new ENGINE.Sprites();
 	this.assets = new ENGINE.Assets(this.loader);
@@ -27,10 +25,10 @@ ENGINE.Application = function(args) {
 	this.loader.ready(function() {
 		app.onready();
 	})
-}
+};
 
 ENGINE.Application.prototype = {
-	aspect_ratio: 1882 / 1240,
+	aspectRatio: 1882 / 1240,
 	// Calls the method in the current scene with the given arguments
 	// e.g. this.dispatch("onmousemove", 32, 64); will trigger the onmousemove method 
 	dispatch: function(method) {
@@ -75,7 +73,7 @@ ENGINE.Application.prototype = {
 	},
 
 	// Creates window dimensions that fit the input aspect ratio
-	window_dim: function(ratio) {
+	windowDim: function(ratio) {
 		var width = window.innerWidth;
 		var height = window.innerHeight;
 		if (height * ratio > width) {

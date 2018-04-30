@@ -1,5 +1,5 @@
 // Collection is an array with some extra methods to manage entities
-ENGINE.Collection = function(parent) {
+ENGINE.Collection = function(parent, args) {
 	// The object that manages the collection
 	this.parent = parent;
 
@@ -8,6 +8,8 @@ ENGINE.Collection = function(parent) {
 
 	// Mark entities for removal if needed
 	this.dirty = false;
+
+	_.extend(this, args);
 }
 
 // Copy array prototype
